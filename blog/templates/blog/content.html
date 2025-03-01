@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusEvents - College Event Management</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --accent: #e74c3c;
+            --gray: #95a5a6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        
+        .btn-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            background: transparent;
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .hero {
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://via.placeholder.com/1200x400');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        
+        .search-bar {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .search-bar input {
+            flex-grow: 1;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 50px 0 0 50px;
+            font-size: 1rem;
+        }
+        
+        .search-bar button {
+            padding: 0.8rem 1.5rem;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 0 50px 50px 0;
+            cursor: pointer;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--primary);
+            display: inline-block;
+        }
+        
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-img {
+            height: 150px;
+            background: #ccc;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .card-content {
+            padding: 1.5rem;
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--gray);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .card-desc {
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: var(--light);
+            color: var(--dark);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .calendar {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+        
+        .calendar-day {
+            padding: 0.8rem;
+            text-align: center;
+            border-radius: 5px;
+        }
+        
+        .calendar-weekday {
+            font-weight: bold;
+            color: var(--gray);
+        }
+        
+        .has-event {
+            background: rgba(52, 152, 219, 0.1);
+            position: relative;
+        }
+        
+        .has-event::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+        
+        .qa-section, .networking, .feedback {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+        }
+        
+        .qa-item {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1.5rem;
+        }
+        
+        .qa-question {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .qa-answer {
+            color: var(--gray);
+        }
+        
+        .profile-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .profile-pic {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #ccc;
+        }
+        
+        .profile-info h4 {
+            margin-bottom: 0.2rem;
+        }
+        
+        .profile-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .feedback-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .feedback-form input,
+        .feedback-form textarea,
+        .feedback-form select {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .feedback-form textarea {
+            min-height: 150px;
+        }
+        
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .close-modal {
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+        
+        .tab-container {
+            margin-bottom: 2rem;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tab-btn {
+            padding: 0.8rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--gray);
+        }
+        
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+            
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Navigation -->
+    <header>
+        <div class="header-container">
+            <div class="logo">Campus<span>Events</span></div>
+            <nav>
+                <ul>
+                    <li><a href="#events">Events</a></li>
+                    <li><a href="#calendar">Calendar</a></li>
+                    <li><a href="#qa">Q&A</a></li>
+                    <li><a href="#networking">Networking</a></li>
+                    <li><a href="#feedback">Feedback</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <button class="btn btn-outline" id="login-btn">Login</button>
+                <button class="btn btn-primary" id="signup-btn">Sign Up</button>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <!-- Hero Section with Search -->
+        <section class="hero">
+            <h1>Discover Events at Your College</h1>
+            <p>Never miss a workshop, hackathon, or networking opportunity again</p>
+            <div class="search-bar">
+                <input type="text" placeholder="Search for events, workshops, hackathons...">
+                <button>Search</button>
+            </div>
+        </section>
+        
+        <!-- Recommended Events Section -->
+        <section id="events">
+            <h2 class="section-title">Recommended For You</h2>
+            <div class="card-grid">
+                <!-- Event Card 1 -->
+                <div class="card">
+                    <div class="card-img" style="background-image: url('https://via.placeholder.com/300x150');"></div>
+                    <div class="card-content">
+                        <h3 class="card-title">Web Development Hackathon</h3>
+                        <div class="card-meta">
+                            <span>March 15, 2025</span>
+                            <span>CS Building</span>
+                        </div>
+                        <p class="card-desc">Join us for a 24-hour coding challenge to build innovative web solutions.</p>
+                        <div class="card-tags">
+                            <span class="tag">Hackathon</span>
+                            <span class="tag">Coding</span>
+                            <span class="tag">Web Dev</span>
+                        </div>
+                        <button class="btn btn-primary" style="margin-top: 1rem;">Register Now</button>
+                    </div>
+                </div>
+                
+                <!-- Event Card 2 -->
+                <div class="card">
+                    <div class="card-img" style="background-image: url('https://via.placeholder.com/300x150');"></div>
+                    <div class="card-content">
+                        <h3 class="card-title">AI & Machine Learning Workshop</h3>
+                        <div class="card-meta">
+                            <span>March 10, 2025</span>
+                            <span>Library Hall</span>
+                        </div>
+                        <p class="card-desc">Learn the fundamentals of AI and ML from industry experts.</p>
+                        <div class="card-tags">
+                            <span class="tag">Workshop</span>
+                            <span class="tag">AI</span>
+                            <span class="tag">Tech</span>
+                        </div>
+                        <button class="btn btn-primary" style="margin-top: 1rem;">Register Now</button>
+                    </div>
+                </div>
+                
+                <!-- Event Card 3 -->
+                <div class="card">
+                    <div class="card-img" style="background-image: url('https://via.placeholder.com/300x150');"></div>
+                    <div class="card-content">
+                        <h3 class="card-title">Career Fair 2025</h3>
+                        <div class="card-meta">
+                            <span>April 5, 2025</span>
+                            <span>Main Auditorium</span>
+                        </div>
+                        <p class="card-desc">Connect with top employers and explore career opportunities.</p>
+                        <div class="card-tags">
+                            <span class="tag">Networking</span>
+                            <span class="tag">Career</span>
+                            <span class="tag">Professional</span>
+                        </div>
+                        <button class="btn btn-primary" style="margin-top: 1rem;">Register Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Calendar Section -->
+        <section id="calendar" class="calendar">
+            <h2 class="section-title">Events Calendar</h2>
+            <div class="calendar-header">
+                <button class="btn btn-outline">Previous</button>
+                <h3>March 2025</h3>
+                <button class="btn btn-outline">Next</button>
+            </div>
+            <div class="calendar-grid">
+                <!-- Weekday headers -->
+                <div class="calendar-day calendar-weekday">Sun</div>
+                <div class="calendar-day calendar-weekday">Mon</div>
+                <div class="calendar-day calendar-weekday">Tue</div>
+                <div class="calendar-day calendar-weekday">Wed</div>
+                <div class="calendar-day calendar-weekday">Thu</div>
+                <div class="calendar-day calendar-weekday">Fri</div>
+                <div class="calendar-day calendar-weekday">Sat</div>
+                
+                <!-- Calendar days -->
+                <div class="calendar-day">1</div>
+                <div class="calendar-day">2</div>
+                <div class="calendar-day">3</div>
+                <div class="calendar-day">4</div>
+                <div class="calendar-day">5</div>
+                <div class="calendar-day">6</div>
+                <div class="calendar-day">7</div>
+                <div class="calendar-day">8</div>
+                <div class="calendar-day">9</div>
+                <div class="calendar-day has-event">10</div>
+                <div class="calendar-day">11</div>
+                <div class="calendar-day">12</div>
+                <div class="calendar-day">13</div>
+                <div class="calendar-day">14</div>
+                <div class="calendar-day has-event">15</div>
+                <div class="calendar-day">16</div>
+                <div class="calendar-day">17</div>
+                <div class="calendar-day">18</div>
+                <div class="calendar-day">19</div>
+                <div class="calendar-day">20</div>
+                <div class="calendar-day">21</div>
+                <div class="calendar-day">22</div>
+                <div class="calendar-day">23</div>
+                <div class="calendar-day">24</div>
+                <div class="calendar-day">25</div>
+                <div class="calendar-day">26</div>
+                <div class="calendar-day">27</div>
+                <div class="calendar-day">28</div>
+                <div class="calendar-day">29</div>
+                <div class="calendar-day">30</div>
+                <div class="calendar-day">31</div>
+            </div>
+        </section>
+        
+        <!-- Q&A Section -->
+        <section id="qa" class="qa-section">
+            <h2 class="section-title">Questions & Answers</h2>
+            <div class="qa-item">
+                <p class="qa-question">Q: How do I register for the Web Development Hackathon?</p>
+                <p class="qa-answer">A: You can register by clicking the "Register Now" button on the event card. You'll need to create an account if you don't already have one.</p>
+            </div>
+            <div class="qa-item">
+                <p class="qa-question">Q: Will the AI Workshop provide certificates?</p>
+                <p class="qa-answer">A: Yes, all participants who complete the workshop will receive a digital certificate of participation.</p>
+            </div>
+            <div class="qa-item">
+                <p class="qa-question">Q: How can I become a volunteer for the Career Fair?</p>
+                <p class="qa-answer">A: To volunteer, please contact the event organizer through the messaging feature on the event page or reach out to the student council.</p>
+            </div>
+            <button class="btn btn-outline">Ask a Question</button>
+        </section>
+        
+        <!-- Networking Section -->
+        <section id="networking" class="networking">
+            <h2 class="section-title">Networking</h2>
+            <p style="margin-bottom: 2rem;">Connect with fellow students, speakers, and industry professionals</p>
+            
+            <div class="profile-card">
+                <div class="profile-pic"></div>
+                <div class="profile-info">
+                    <h4>Alex Johnson</h4>
+                    <p>Computer Science, Year 3</p>
+                    <p>Interests: Web Development, AI, Blockchain</p>
+                </div>
+                <button class="btn btn-outline">Connect</button>
+            </div>
+            
+            <div class="profile-card">
+                <div class="profile-pic"></div>
+                <div class="profile-info">
+                    <h4>Sarah Williams</h4>
+                    <p>UI/UX Designer at TechCorp</p>
+                    <p>Speaker at Design Workshop</p>
+                </div>
+                <button class="btn btn-outline">Connect</button>
+            </div>
+            
+            <div class="profile-card">
+                <div class="profile-pic"></div>
+                <div class="profile-info">
+                    <h4>Dr. Michael Chen</h4>
+                    <p>Professor, Computer Science</p>
+                    <p>Organizer: AI & Machine Learning Workshop</p>
+                </div>
+                <button class="btn btn-outline">Connect</button>
+            </div>
+            
+            <button class="btn btn-primary">View All Connections</button>
+        </section>
+        
+        <!-- Feedback Section -->
+        <section id="feedback" class="feedback">
+            <h2 class="section-title">Feedback Forum</h2>
+            <p style="margin-bottom: 2rem;">Help us improve our events by sharing your thoughts</p>
+            
+            <form class="feedback-form">
+                <label for="event-select">Select Event</label>
+                <select id="event-select">
+                    <option>Web Development Hackathon</option>
+                    <option>AI & Machine Learning Workshop</option>
+                    <option>Career Fair 2025</option>
+                </select>
+                
+                <label for="rating">Rating</label>
+                <select id="rating">
+                    <option>5 - Excellent</option>
+                    <option>4 - Very Good</option>
+                    <option>3 - Good</option>
+                    <option>2 - Fair</option>
+                    <option>1 - Poor</option>
+                </select>
+                
+                <label for="feedback-text">Your Feedback</label>
+                <textarea id="feedback-text" placeholder="Share your experience, suggestions, or concerns..."></textarea>
+                
+                <button class="btn btn-primary" type="submit">Submit Feedback</button>
+            </form>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="logo" style="margin-bottom: 1rem;">Campus<span>Events</span></div>
+            <p>Your one-stop platform for college events and networking</p>
+            
+            <div class="footer-links">
+                <a href="#">About Us</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact Us</a>
+            </div>
+            
+            <p>&copy; 2025 CampusEvents. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <!-- Login Modal -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Login to CampusEvents</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            
+            <div class="tab-container">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="login-tab">Login</button>
+                    <button class="tab-btn" data-tab="signup-tab">Sign Up</button>
+                </div>
+                
+                <div class="tab-content active" id="login-tab">
+                    <form>
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required>
+                        
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                        
+                        <button class="btn btn-primary" style="width: 100%;">Login</button>
+                    </form>
+                </div>
+                
+                <div class="tab-content" id="signup-tab">
+                    <form>
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" required>
+                        
+                        <label for="signup-email">Email</label>
+                        <input type="email" id="signup-email" required>
+                        
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" required>
+                        
+                        <label for="signup-confirm">Confirm Password</label>
+                        <input type="password" id="signup-confirm" required>
+                        
+                        <button class="btn btn-primary" style="width: 100%;">Sign Up</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Login/Signup Modal
+        const loginBtn = document.getElementById('login-btn');
+        const signupBtn = document.getElementById('signup-btn');
+        const loginModal = document.getElementById('login-modal');
+        const closeModal = document.querySelector('.close-modal');
+        
+        loginBtn.addEventListener('click', () => {
+            loginModal.style.display = 'flex';
+            document.querySelector('[data-tab="login-tab"]').click();
+        });
+        
+        signupBtn.addEventListener('click', () => {
+            loginModal.style.display = 'flex';
+            document.querySelector('[data-tab="signup-tab"]').click();
+        });
+        
+        closeModal.addEventListener('click', () => {
+            loginModal.style.display = 'none';
+        });
+        
+        // Tab Switching
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabBtns.forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to current tab
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.tab).classList.add('active');
+            });
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
