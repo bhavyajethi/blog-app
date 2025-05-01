@@ -55,5 +55,3 @@ Django - Web framework
 SQLite - Database
 Bootstrap - Styling
 
-Contributing
-Since this is my learning project, feel free to suggest improvements or fork the repository.
